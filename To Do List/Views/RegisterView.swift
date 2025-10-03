@@ -27,7 +27,7 @@ struct RegisterView: View {
                         //Attempt registration
                     }
                 }
-                .offset(y: 50)
+//                .offset(y: 50)
             }
             
         }
