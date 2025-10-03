@@ -33,7 +33,7 @@ struct LoginView: View {
                 }
                     //Create an acoount
                     VStack{
-                        Text("New around Here")
+                        Text("Here")
 //                            .font(.system(size: 15, weight: .semibold))
                         
                         
