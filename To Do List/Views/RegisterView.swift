@@ -15,19 +15,28 @@ struct RegisterView: View {
         NavigationView{
             VStack{
                 HeaderView(title: "Register", subtitle: "Start organizing todos", angle: -15, background: .orange)
+                    
                 
                 Form{
                     TextField("Enter full name", text: $name)
                         .textFieldStyle(DefaultTextFieldStyle())
+                        .autocorrectionDisabled()
                     TextField("Enter E-mail Adress", text: $email)
                         .textFieldStyle(DefaultTextFieldStyle())
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
                     SecureField("Enter Password", text: $password)
                         .textFieldStyle(DefaultTextFieldStyle())
-                    TLbutton(title: "Create account", background: .green ) {
-                        //Attempt registration
+                    Section {
+                        TLbutton(title: "Create account", background: .green) {
+//                            viewModel.login()
+                        }
+                        .listRowInsets(EdgeInsets()) // optional, removes default side padding
                     }
+
                 }
 //                .offset(y: 50)
+                
             }
             
         }

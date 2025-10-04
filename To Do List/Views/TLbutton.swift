@@ -28,8 +28,9 @@ struct TLbutton: View {
                 
                 
             }
+//            .padding()
         }
-
+        
     }
 
     }
