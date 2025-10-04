@@ -24,11 +24,9 @@ struct TLbutton: View {
                 Text(title)
                     .foregroundColor(Color.white)
                     .bold()
-                    .frame(height: 40)
-                
-                
             }
-//            .padding()
+            .frame(maxWidth: .infinity, minHeight: 48) // make it clearly tappable
+            .contentShape(Rectangle())
         }
         
     }

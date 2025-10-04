@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State var email = ""
-    @State var password = ""
-    @State var name = ""
+   @StateObject var viewModel: RegisterViewViewModel
+   @Environment(\.dismiss) private var dismiss
+
+    init(viewModel: RegisterViewViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
     var body: some View {
         NavigationView{
             VStack{
@@ -18,18 +22,22 @@ struct RegisterView: View {
                     
                 
                 Form{
-                    TextField("Enter full name", text: $name)
+                    if !viewModel.errorMessage.isEmpty {
+                        Text(viewModel.errorMessage)
+                            .foregroundColor(Color.red)
+                    }
+                    TextField("Enter full name", text: $viewModel.name)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .autocorrectionDisabled()
-                    TextField("Enter E-mail Adress", text: $email)
+                    TextField("Enter E-mail Adress", text: $viewModel.email)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .autocapitalization(.none)
                         .autocorrectionDisabled()
-                    SecureField("Enter Password", text: $password)
+                    SecureField("Enter Password", text: $viewModel.password)
                         .textFieldStyle(DefaultTextFieldStyle())
                     Section {
                         TLbutton(title: "Create account", background: .green) {
-//                            viewModel.login()
+                            viewModel.register()
                         }
                         .listRowInsets(EdgeInsets()) // optional, removes default side padding
                     }
@@ -37,6 +45,12 @@ struct RegisterView: View {
                 }
 //                .offset(y: 50)
                 
+            }
+            .onChange(of: viewModel.didRegister) { didRegister in
+                if didRegister {
+                    // On success, dismiss back to previous screen (e.g., Login)
+                    dismiss()
+                }
             }
             
         }
@@ -49,5 +63,6 @@ struct RegisterView: View {
 
 
 #Preview {
-    RegisterView()
+    RegisterView(viewModel: RegisterViewViewModel())
 }
+

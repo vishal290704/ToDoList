@@ -9,60 +9,69 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel = LoginViewViewModel()
-//    @State private var email = ""
-//    @State private var password = ""
-    
+
     var body: some View {
-        
-        NavigationView{
+        NavigationView {
             VStack {
-                //Header
+                // Header
                 HeaderView(title: "To Do List", subtitle: "Get things done", angle: 15, background: .red)
-                
+
                 Spacer().frame(height: 30)
-           
-                //Login Form
-                Form{
+
+                // Login Form
+                Form {
                     if !viewModel.errorMessage.isEmpty {
                         Text(viewModel.errorMessage)
-                            .foregroundColor(Color.red)
-                    }
-                    TextField("Email Address", text: $viewModel.email)
-                        .autocapitalization(.none)
-                        .autocorrectionDisabled()
-                    
-                    //                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .textFieldStyle(DefaultTextFieldStyle())
-                    SecureField("Password", text: $viewModel.password)
-                    //                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .textFieldStyle(DefaultTextFieldStyle())
-                    
-                    
-//                    TLbutton(title: "Log In", background: .blue) {
-//                        //Attemt to login
-//                        viewModel.login()
-//                    }
-                    Section {
-                        TLbutton(title: "Log In", background: .blue) {
-                            viewModel.login()
-                        }
-                        .listRowInsets(EdgeInsets()) // optional, removes default side padding
+                            .foregroundColor(.red)
+                            .font(.callout)
                     }
 
+                    TextField("Email Address", text: $viewModel.email)
+                        .keyboardType(.emailAddress)
+                        .textContentType(.emailAddress)
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
+                        .textFieldStyle(DefaultTextFieldStyle())
+
+                    SecureField("Password", text: $viewModel.password)
+                        .textContentType(.password)
+                        .textFieldStyle(DefaultTextFieldStyle())
+                        .onSubmit {
+                            viewModel.login()
+                        }
+
+                    Section {
+                        TLbutton(title: viewModel.isLoading ? "Logging In..." : "Log In",
+                                 background: .blue) {
+                            viewModel.login()
+                        }
+                        .disabled(viewModel.isLoading)
+                        .listRowInsets(EdgeInsets())
+                    }
                 }
-                
-                
-                //                .padding(.top, 20)
-                //Create an acoount
-                VStack{
-                    Text("New Here")
-                    //                            .font(.system(size: 15, weight: .semibold))
-                    
-                    
-                    NavigationLink("Create an account", destination: RegisterView())
+
+                // Create an account
+                VStack {
+                    Text("New here?")
+                    NavigationLink("Create an account",
+                                   destination: RegisterView(viewModel: RegisterViewViewModel()))
                 }
                 .padding(.bottom, 20)
+
                 Spacer()
+            }
+            .navigationBarHidden(true)
+            .overlay {
+                if viewModel.isLoading {
+                    ZStack {
+                        Color.black.opacity(0.2).ignoresSafeArea()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(12)
+                    }
+                }
             }
         }
     }

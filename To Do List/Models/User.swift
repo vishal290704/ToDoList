@@ -1,18 +1,18 @@
-//
-//  User.swift
-//  To Do List
-//
-//  Created by Vishal Srivastava on 13/03/25.
-//
-
+import Foundation
 import SwiftUI
 
-struct User: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+struct User {
+    let id: String
+    let name: String
+    let email: String
+    let joined: TimeInterval
 
-#Preview {
-    User()
+    func asDictionary() -> [String: Any] {
+        return [
+            "id": id,
+            "name": name,
+            "email": email,
+            "joined": joined
+        ]
+    }
 }
